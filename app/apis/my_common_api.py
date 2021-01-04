@@ -108,7 +108,7 @@ def harbor_tag_latest():
         try:
             harbor_r=requests.get(url=harbor_url,auth=HTTPBasicAuth(app.config["HARBOR_USER_NAME"],app.config["HARBOR_PASS_WORD"]))
             for i in harbor_r.json():
-                harbor_repo_tag.append(i['name'])
+                harbor_repo_tag.append(int(i['name']))
         except Exception as e:
             print(e)
         harbor_repo_tag.sort(reverse=True)
