@@ -3,6 +3,9 @@ FROM python:3.6-alpine
 # 设置环境变量
 ARG VER_GLIBC=2.31-r0
 ARG GLIBC_DOWNLOAD_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VER_GLIBC}
+ENV SVN_DEPLOY_URL="http://fy-svn.fjfuyu.net/svn/Deploy/"
+ENV SVN_USER_NAME="jk_read-only"
+ENV SVN_PASS_WORD="jk_read-only@fjfuyu.net"
 ENV LANG=en_US.UTF8
 
 # 定义工作目录
@@ -33,12 +36,12 @@ RUN   cd  /usr/local/glibc/ &&  apk add glibc-${VER_GLIBC}.apk glibc-bin-${VER_G
 
 RUN  which pip &&   pip install --upgrade pip  -i https://mirrors.aliyun.com/pypi/simple
 
-RUN  pip install flask python-jenkins python-gitlab svn -i https://pypi.tuna.tsinghua.edu.cn/simple &&\
+RUN  pip install flask python-jenkins python-gitlab svn pymysql -i https://pypi.tuna.tsinghua.edu.cn/simple &&\
     rm -rf /tmp/* /var/cache/apk/*
 
 # 添加svn服务器证书信任
-RUN cp -a svnSelfSignedRootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates &&\
-    chmod a+x /app/login-svn.sh && /app/login-svn.sh
+RUN cp -a /app/svnSelfSignedRootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates &&\
+    chmod a+x /app/login-svn.sh && sh /app/login-svn.sh
 
 EXPOSE 8888
 

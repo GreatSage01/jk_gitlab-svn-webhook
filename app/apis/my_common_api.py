@@ -8,6 +8,7 @@ import gitlab
 import svn.remote
 import svn.exception
 import requests
+import pymysql
 from flask import Blueprint, request, jsonify, current_app as app
 from requests.auth import HTTPBasicAuth
 
@@ -115,4 +116,37 @@ def harbor_tag_latest():
         harbor_repo_tag_latest=str(harbor_repo_tag[0])
         return harbor_repo_tag_latest
 
-
+#获取生产MySQL全部数据库
+@my_common_api.route('/prod_mysql', methods=['GET'])
+def prod_mysql():
+    if request.method == 'GET':
+        env = request.args.get("env")
+        mysql_conn=app.config["MYSQL_CONN"]
+        if env not in mysql_conn.keys():
+            return jsonify({"没有{0}这个环境的mysql配置".format(env)}), 401
+        host=mysql_conn[env]["mysql_ip"]
+        port=mysql_conn[env]["mysql_port"]
+        user = mysql_conn[env]["mysql_user"]
+        passwd = mysql_conn[env]["mysql_passwd"]
+        charset= mysql_conn[env]["mysql_charset"]
+        #连接数据库
+        try:
+            conn = pymysql.connect(host=host, port=port, user=user, password=passwd, charset=charset)
+            cursor = conn.cursor()
+            # 定义要执行的SQL语句
+            sql = """
+                show databases
+            """
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            dbs_list = []
+            exclude_dbs=app.config["MYSQL_EXCLUDE"]
+            for i in result:
+                if i[0] not in exclude_dbs:
+                    dbs_list.append(i[0])
+            cursor.close()
+            conn.close()
+            dbs_str = '\n'.join(dbs_list)
+            return dbs_str
+        except Exception as e:
+            return jsonify({e}), 401

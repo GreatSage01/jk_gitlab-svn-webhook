@@ -9,4 +9,3 @@ spawn svn ls --username ${user_name} --password ${pass_word} ${deploy_url}
 expect "(R)eject, accept (t)emporarily or accept (p)ermanently? "
 exit
 EOF
-

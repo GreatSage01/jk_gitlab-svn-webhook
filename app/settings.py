@@ -35,3 +35,18 @@ WEBHOOK_GIT_GROUP = os.environ.get("WEBHOOK_GIT_GROUP", {"dotnet": "server-side"
 HARBOR_URL=os.environ.get("HARBOR_URL", "http://hub.xueerqin.net")
 HARBOR_USER_NAME = os.environ.get("HARBOR_USER_NAME", "admin")
 HARBOR_PASS_WORD = os.environ.get("HARBOR_PASS_WORD", "Fyinfo@123")
+
+#Mysql
+MYSQL_CONN=os.environ.get("MYSQL_CONN",{"prod":{"mysql_ip" : "172.16.0.27",
+                                                "mysql_port" : 3306,
+                                                 "mysql_user":"fyjy",
+                                                 "mysql_passwd":"FYJY@yyinfo1205",
+                                                 "mysql_charset":"utf8"},
+                                        "uat":{"mysql_ip" : "172.16.0.232",
+                                                "mysql_port" : 30837,
+                                                 "mysql_user":"root",
+                                                 "mysql_passwd":"Fyinfo@123",
+                                                 "mysql_charset":"utf8"}
+                                        }
+                          )
+MYSQL_EXCLUDE=os.environ.get("MYSQL_EXCLUDE",['information_schema','mysql','performance_schema','sys'])
