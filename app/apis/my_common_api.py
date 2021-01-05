@@ -81,14 +81,18 @@ def web_hook():
             except  Exception as e:
                 print(e)
                 return jsonify({'status': prject_namespace+'的所属gitlab项目：'+project_name+',gitlab项目还未在jenins上设置JOB任务，请设置'}), 401
-
+            deployEnv=''
+            if project_branch == "dev":
+                deployEnv="dev"
+            elif project_branch == "master":
+                deployEnv="pre"
             print("prject_namespace: {0}".format(prject_namespace))
             print("project_branch: {0}".format(project_branch))
             print("project_name: {0}".format(project_name))
             print("user_name: {0}".format(user_name))
             print("jenkins_jobName: {0}".format(jenkins_jobName))
 
-            params = {'project_name': project_name, 'project_branch': project_branch, 'user_name': user_name}
+            params = {'project_name': project_name, 'deployEnv': deployEnv, 'user_name': user_name}
             server = jenkins.Jenkins(url=app.config["JENKINS_URL"], username=app.config["JENKINS_USER_NAME"], password=app.config["JENKINS_API_TOKEN"])
             server.build_job(name=jenkins_jobName, parameters=params)
 

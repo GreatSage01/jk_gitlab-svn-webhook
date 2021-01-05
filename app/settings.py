@@ -18,7 +18,7 @@ SVN_PASS_WORD = os.environ.get("SVN_PASS_WORD", "jk_read-only@fjfuyu.net")
 JENKINS_URL = os.environ.get("JENKINS_URL", "http://jenkins.fjfuyu.net")
 JENKINS_USER_NAME = os.environ.get("JENKINS_USER_NAME", "webhook")
 JENKINS_API_TOKEN = os.environ.get("JENKINS_API_TOKEN", "11bcfb90b2eafd71c2addb615f17131cdc")
-JENKINS_JOB_NAME = os.environ.get("JENKINS_JOB_NAME", {"dotnet_Com": "dotnet-pipeline",
+JENKINS_JOB_NAME = os.environ.get("JENKINS_JOB_NAME", {"dotnet_Com": "dotnet-new-pipeline",
                                                         "dotnet_AB": "dotnet-AB-pipeline",
                                                         "frontend_Com": "frontend-git-pipeline",
                                                         "java_Com": "java-git-pipeline"})
